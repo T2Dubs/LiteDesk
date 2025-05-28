@@ -24,7 +24,7 @@
 ## Installation
 
 1. Download the latest `LiteDeskInstaller.exe` from the [Releases page](https://github.com/T2Dubs/LiteDesk/releases/tag/Release).
-2. Run the installer.
+2. Run the installer (if installing in default Program Files(x86), ensure you install as administrator).
 3. Choose your database type.
 4. (Optional) Enter a connection string (defaults are pre-configured for SQLite).
 5. Finish installation and launch LiteDesk.
