@@ -22,19 +22,30 @@ namespace LiteDesk
         public MainWindow()
         {
             InitializeComponent();
+            IsEnabled = false;
             _db = App.Services!.GetService<IDatabaseService>()!;
+            LoadClients();
             CallLogOverlay.RequestClosePanel += (_, _) => HideCallLogPanel();
             ClientOverlay.RequestClosePanel += (_, _) => HideClientPanel();
             ClientOverlay.ShowNotification = ShowNotification;
-            ClientOverlay._db = _db;
-            LoadClients();
-            ClientOverlay.Clients = AllClients;
         }
 
         private async void LoadClients()
         {
-            AllClients = await _db.GetClientsAsync();
-            ClientsList.ItemsSource = AllClients.OrderBy(c => c.Name);
+            try
+            {
+                await _db.InitializeDatabase();
+                AllClients = await _db.GetClientsAsync();
+                ClientsList.ItemsSource = AllClients.OrderBy(c => c.Name);
+                ClientOverlay._db = _db;
+                ClientOverlay.Clients = AllClients;
+                IsEnabled = true;
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private async void ClientsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
